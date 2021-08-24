@@ -1,0 +1,26 @@
+.w-200 {
+    max-width: 180px;
+    width: 100%;
+}
+.color-white {
+    color: #eee;
+}
+
+.layout-transition-enter {
+    transition: translateX(-50px);
+}
+.layout-transition-enter-active {
+    transform: translateX(0px);
+}
+.w-80per{
+    width: 80%;
+    height: 80%;
+}
+.hide{
+    transform: translateY(-1000px);
+}
+
+.left-center{
+    left: 50%;
+    transform: translateX(-50%);
+}

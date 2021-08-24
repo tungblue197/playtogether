@@ -1,82 +1,79 @@
 import Head from 'next/head'
-
+import Image from 'next/image'
+import Button from '../components/button'
+import { CSSTransition } from 'react-transition-group';
+import { useState } from 'react';
+import Popup from '../components/popup';
+import ReactMapGL, { Marker } from 'react-map-gl';
 export default function Home() {
+
+
+  const [_in, setIn] = useState(false);
+
+
+  const [viewport, setViewport] = useState({
+    latitude: 37.7577,
+    longitude: -122.4376,
+    zoom: 8
+  });
+  const [p, setP] = useState({
+    latitude: 37.7577,
+    longitude: -122.4376,
+  })
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <div className='container'>
+      <CSSTransition in={_in} classNames='layout-transition' timeout={1000} >
+        <div className="w-full">
+          <header className='flex h-10 shadow-sm items-center px-9 header'>
+            <div className='flex-auto header__left'>
+              <h3 className='text-sm text-blue-400'>Cùng đi chơi nào</h3>
+            </div>
+            <div className='flex items-center header__left'>
+              <Image className='rounded-full cursor-pointer' objectFit='fill' src='/pngtree-businessman-user-avatar-free-vector-png-image_1538405.jpeg' width={30} height={30} />
+            </div>
+          </header>
+          <div className='container shadow max-w-3xl my-6 mx-auto w-full rounded py-4'>
+            <header className='flex items-center justify-between h-10 px-6'>
+              <Button disable={true}>
+                Tạo nhóm
+              </Button>
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.js
-          </code>
-        </p>
-
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+              <div>
+                <span className='text-base text-blue-400'>Thông tin cá nhân</span>
+              </div>
+              <button className='flex border px-3 py-2 rounded cursor-poiter bg-blue-400 text-sm'>
+                Tạo nhóm
+              </button>
+            </header>
+            <form className='p-6 pb-0'>
+              <div className='flex items-center my-4'>
+                <label className='block w-200 text-sm mr-1'>Tên của bạn<span className='required-dot'>*</span>: </label>
+                <input type='text' className='border rounded flex-1 focus:ring focus:border-blue-100 text-xs p-2' />
+              </div>
+              <div className='flex items-center'>
+                <Button className='w-200'>Chọn địa điểm của bạn</Button>
+                <input type='text' className='border rounded flex-1 focus:ring focus:border-blue-100 text-xs p-2' />
+              </div>
+            </form>
+          </div>
         </div>
-      </main>
-
-      <footer className="flex items-center justify-center w-full h-24 border-t">
-        <a
-          className="flex items-center justify-center"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </CSSTransition>
+      <Button onClick={e => setViewport({ longitude: 100, latitude: 10.22, zoom: 10 })}>In</Button>
+      <Popup >
+        <ReactMapGL
+          {...viewport}
+          width="100%"
+          height="100%"
+          mapboxApiAccessToken='pk.eyJ1IjoidHVuZ3B2OTciLCJhIjoiY2tzb3IzNzE1M3U2bTJ3bzJzdmxpc3VxeCJ9.bWom9lqXVp6IMGcWH0Aw_A'
+          onViewportChange={(viewport) => setViewport(viewport)}
+          captureDrag={false}
         >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="h-4 ml-2" />
-        </a>
-      </footer>
+          <Marker longitude={p.longitude} latitude={p.latitude}  onDrag={e => {
+            console.log('e : ', e);
+          }}><button>hello</button></Marker>
+        </ReactMapGL>
+      </Popup>
     </div>
   )
 }
